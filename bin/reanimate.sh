@@ -1,0 +1,53 @@
+#!/bin/dash
+
+# This is free and unencumbered software released into the public domain.
+#
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
+#
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# For more information, please refer to <http://unlicense.org/>
+
+for ARG in "$@"
+do
+    case "$ARG" in
+        (*' '*)  # <-- so cute!
+            echo "$(basename $0): argument with spaces: $ARG" >&2
+            continue
+            ;;
+    esac
+    DIR="$(realpath "$ARG")"
+    GIF_FILE="$DIR/../$(basename "$DIR").gif"
+    DELAYMAP_FILE=$(mktemp)
+    magick "$GIF_FILE" -format '%s %T\n' info: >"$DELAYMAP_FILE"
+    FRAMES=
+    while IFS= read -r LINE
+    do
+        if test -z "$LINE"
+        then
+            break
+        fi
+        INDEX=${LINE%% *}
+        DELAY=${LINE#* }
+        FRAMES="$FRAMES -delay $DELAY -dispose previous $ARG/$INDEX.png"
+    done <"$DELAYMAP_FILE"
+    rm "$DELAYMAP_FILE"
+    convert $FRAMES -loop 0 "$DIR/$(basename "$DIR").gif"
+done
