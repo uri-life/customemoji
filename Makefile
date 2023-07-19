@@ -4,11 +4,16 @@ PACK=bin/pack.sh
 
 all: \
 	__hifumi \
+	library_of_ruina \
 	lobcorp \
 
 __hifumi:
 	$(BUILDGIF) src/__hifumi
 	$(PACK) src/__hifumi
+
+library_of_ruina:
+	$(BUILDPNG) src/library_of_ruina
+	$(PACK) src/library_of_ruina
 
 lobcorp:
 	$(BUILDPNG) src/lobcorp
