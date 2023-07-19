@@ -7,6 +7,7 @@ all: \
 	library_of_ruina \
 	limbcomp \
 	lobcorp \
+	sq \
 
 __hifumi:
 	$(BUILDGIF) src/__hifumi
@@ -23,3 +24,7 @@ limbcomp:
 lobcorp:
 	$(BUILDPNG) src/lobcorp
 	$(PACK) src/lobcorp
+
+sq:
+	$(BUILDPNG) src/sq
+	$(PACK) src/sq
