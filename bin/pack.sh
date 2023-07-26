@@ -33,11 +33,13 @@ do
     find "$ARG"/ \
          -name '*.png' \
          -depth 1 \
-         -exec mv {} "$PACK_DIR" \;
+         -exec mv {} "$PACK_DIR" \; \
+        2>/dev/null
     find "$ARG"/*/ \
          -name '*.gif' \
          -depth 1 \
-         -exec mv {} "$PACK_DIR" \;
+         -exec mv {} "$PACK_DIR" \; \
+        2>/dev/null
     STORED_PWD="$(pwd)"
     cd "$PACK_DIR"
     tar -czf "$STORED_PWD/$NAME.tar.gz" *
