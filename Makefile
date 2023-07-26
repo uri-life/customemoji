@@ -3,15 +3,18 @@ BUILDPNG=bin/buildpng.sh
 PACK=bin/pack.sh
 
 all: \
-	__hifumi \
+	__ \
 	library_of_ruina \
 	limbcomp \
 	lobcorp \
 	sq \
 
+__: \
+	__hifumi \
+
 __hifumi:
-	$(BUILDGIF) src/__hifumi
-	$(PACK) src/__hifumi
+	$(BUILDGIF) src/__/hifumi
+	$(PACK) -name __hifumi src/__/hifumi
 
 library_of_ruina:
 	$(BUILDPNG) src/library_of_ruina
