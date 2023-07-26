@@ -25,10 +25,32 @@
 #
 # For more information, please refer to <http://unlicense.org/>
 
+NAME=
+while true
+do
+    case "$1" in
+        -name)
+            shift
+            NAME="$1"
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
 for ARG in "$@"
 do
     DIR="$(realpath "$ARG")"
-    NAME="$(basename "$DIR")"
+    if test -z "$NAME"
+    then
+        NAME="$(basename "$DIR")"
+    fi
     PACK_DIR="$(mktemp -d)"
     find "$ARG"/ \
          -name '*.png' \
